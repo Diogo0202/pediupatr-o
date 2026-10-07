@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div th:fragment="sidebar">
+        <div id="sidebar" class="d-flex flex-column justify-content-between">
+            <div>
+                <!-- Brand Header -->
+                <div class="sidebar-brand-wrapper">
+                    <a th:href="@{/}" class="sidebar-brand text-decoration-none">
+                        <span class="fs-4">🍕</span>
+                        <span class="brand-text">Pediu<span class="brand-accent">Patrão</span></span>
+                    </a>
+                </div>
+
+                <!-- Card do Usuário Logado & Cargo -->
+                <div class="user-profile-badge mb-3">
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="user-avatar-circle">
+                            <i class="bi bi-person-fill"></i>
+                        </div>
+                        <div class="user-info-text overflow-hidden">
+                            <div class="user-name text-truncate" sec:authentication="name">Usuário</div>
+                            <!-- Badges por Cargo -->
+                            <div class="role-badge-container mt-1">
+                                <span sec:authorize="hasRole('ADMIN')" class="badge bg-danger role-badge">
+                                    <i class="bi bi-shield-check me-1"></i>Admin
+                                </span>
+                                <span sec:authorize="hasRole('GERENTE')" class="badge bg-primary role-badge" style="background: linear-gradient(135deg, #0284c7, #2563eb) !important;">
+                                    <i class="bi bi-bar-chart-line-fill me-1"></i>Gerente
+                                </span>
+                                <span sec:authorize="hasRole('ATENDENTE')" class="badge role-badge" style="background: linear-gradient(135deg, #ea580c, #f97316) !important; color: #fff;">
+                                    <i class="bi bi-headset me-1"></i>Atendente
+                                </span>
+                                <span sec:authorize="hasRole('FORNECEDOR')" class="badge bg-success role-badge" style="background: linear-gradient(135deg, #059669, #10b981) !important;">
+                                    <i class="bi bi-box-seam-fill me-1"></i>Fornecedor
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menu de Navegação -->
+                <ul class="nav flex-column sidebar-nav">
+                    
+                    <!-- 1. Home / Dashboard (Gerente e Admin) -->
+                    <li class="nav-item" sec:authorize="hasAnyRole('ADMIN', 'GERENTE')">
+                        <a class="nav-link" th:href="@{/}">
+                            <i class="bi bi-grid-1x2-fill nav-icon"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+
+                    <!-- 2. Pedidos & Balcão (Atendente, Gerente e Admin) -->
+                    <li class="nav-item" sec:authorize="hasAnyRole('ADMIN', 'GERENTE', 'ATENDENTE')">
+                        <a class="nav-link" th:href="@{/pedidos}">
+                            <i class="bi bi-receipt nav-icon"></i>
+                            <span>Pedidos</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" sec:authorize="hasAnyRole('ADMIN', 'GERENTE', 'ATENDENTE')">
+                        <a class="nav-link" th:href="@{/pedidos/novo}">
+                            <i class="bi bi-plus-circle-fill nav-icon text-warning"></i>
+                            <span>Novo Pedido</span>
+                        </a>
+                    </li>
+
+                    <!-- 3. Clientes (Atendente, Gerente e Admin) -->
+                    <li class="nav-item" sec:authorize="hasAnyRole('ADMIN', 'GERENTE', 'ATENDENTE')">
+                        <a class="nav-link" th:href="@{/clientes}">
+                            <i class="bi bi-people-fill nav-icon"></i>
+                            <span>Clientes</span>
+                        </a>
+                    </li>
+
+                    <!-- 4. Produtos & Cardápio (Fornecedor, Gerente e Admin) -->
+                    <li class="nav-item" sec:authorize="hasAnyRole('ADMIN', 'GERENTE', 'FORNECEDOR')">
+                        <a class="nav-link" th:href="@{/produtos}">
+                            <i class="bi bi-boxes nav-icon"></i>
+                            <span>Produtos & Insumos</span>
+                        </a>
+                    </li>
+
+                    <!-- Separador de Gestão -->
+                    <li class="nav-header text-uppercase text-muted small mt-3 mb-1 px-3" sec:authorize="hasAnyRole('ADMIN', 'GERENTE')">
+                        Gestão & Segurança
+                    </li>
+
+                    <!-- 5. Usuários (Gerente e Admin) -->
+                    <li class="nav-item" sec:authorize="hasAnyRole('ADMIN', 'GERENTE')">
+                        <a class="nav-link" th:href="@{/usuarios}">
+                            <i class="bi bi-person-badge-fill nav-icon"></i>
+                            <span>Usuários</span>
+                        </a>
+                    </li>
+
+                    <!-- 6. Auditoria (Admin) -->
+                    <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+                        <a class="nav-link" th:href="@{/admin/auditoria}">
+                            <i class="bi bi-shield-lock-fill nav-icon"></i>
+                            <span>Auditoria</span>
+                        </a>
+                    </li>
+
+                    <!-- Separador Institucional -->
+                    <li class="nav-header text-uppercase text-muted small mt-3 mb-1 px-3">
+                        Transparência
+                    </li>
+
+                    <!-- 7. Termos e LGPD -->
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/termos-de-uso}">
+                            <i class="bi bi-file-earmark-text-fill nav-icon"></i>
+                            <span>Termos de Uso</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/politica-privacidade}">
+                            <i class="bi bi-shield-check nav-icon"></i>
+                            <span>Privacidade & LGPD</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Rodapé da Sidebar com Botão de Logout -->
+            <div class="sidebar-footer p-3 border-top border-secondary border-opacity-25">
+                <form th:action="@{/logout}" method="post" class="m-0">
+                    <button type="submit" class="btn btn-outline-danger w-100 btn-sm d-flex align-items-center justify-content-center gap-2 py-2">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Sair do Sistema</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Novo Pedido</title>
+</head>
+<body>
+
+<div th:fragment="content">
+
+    <div class="d-flex align-items-center gap-3 mb-4">
+        <a href="/pedidos" class="btn btn-outline-secondary btn-sm">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+        <h2 class="fw-bold mb-0">Novo Pedido</h2>
+    </div>
+
+    <div class="alert alert-danger" th:if="${erro}" th:text="${erro}"></div>
+
+    <div class="card shadow-sm" style="max-width: 640px;">
+        <div class="card-body p-4">
+            <form th:action="@{/pedidos/salvar}" th:object="${pedido}" method="post">
+
+                <div class="mb-3">
+                    <label for="clienteId" class="form-label fw-medium">Cliente</label>
+                    <select id="clienteId" class="form-select" th:field="*{clienteId}" required>
+                        <option value="" disabled>Selecione o cliente</option>
+                        <option th:each="c : ${clientes}" th:value="${c.id}" th:text="${c.nome}"></option>
+                    </select>
+                    <div class="text-danger small" th:if="${#fields.hasErrors('clienteId')}" th:errors="*{clienteId}"></div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="tipoPizza" class="form-label fw-medium">Tipo de pizza</label>
+                        <select id="tipoPizza" class="form-select" th:field="*{tipoPizza}" required>
+                            <option value="" disabled>Selecione</option>
+                            <option th:each="t : ${tipos}" th:value="${t}" th:text="${t}"></option>
+                        </select>
+                        <div class="text-danger small" th:if="${#fields.hasErrors('tipoPizza')}" th:errors="*{tipoPizza}"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="quantidade" class="form-label fw-medium">Quantidade</label>
+                        <input type="number" id="quantidade" class="form-control"
+                               th:field="*{quantidade}" min="1" required>
+                        <div class="text-danger small" th:if="${#fields.hasErrors('quantidade')}" th:errors="*{quantidade}"></div>
+                    </div>
+                </div>
+
+                <div class="mb-3 mt-3">
+                    <label for="sabor" class="form-label fw-medium">Sabor / Produto</label>
+                    <select id="sabor" class="form-select" th:field="*{sabor}" required>
+                        <option value="" disabled>Selecione o sabor</option>
+                        <option th:each="p : ${produtos}"
+                                th:value="${p.nome}"
+                                th:text="${p.nome}"
+                                th:attr="data-preco=${p.preco}"></option>
+                    </select>
+                    <div class="text-danger small" th:if="${#fields.hasErrors('sabor')}" th:errors="*{sabor}"></div>
+                    <div class="form-text" th:if="${#lists.isEmpty(produtos)}">
+                        Nenhum produto cadastrado — o valor unitário precisará ser informado manualmente.
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label for="valorUnitario" class="form-label fw-medium">Valor unitário (R$)</label>
+                        <input type="number" step="0.01" min="0" id="valorUnitario"
+                               class="form-control" th:field="*{valorUnitario}">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="metodoPagamento" class="form-label fw-medium">Pagamento</label>
+                        <select id="metodoPagamento" class="form-select" th:field="*{metodoPagamento}" required>
+                            <option th:each="m : ${metodos}" th:value="${m}" th:text="${m}"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-medium">Total estimado</label>
+                        <div class="form-control bg-light fw-bold" id="totalEstimado">R$ 0,00</div>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-lg me-1"></i>Criar pedido
+                    </button>
+                    <a href="/pedidos" class="btn btn-outline-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const selSabor = document.getElementById('sabor');
+        const inpValor = document.getElementById('valorUnitario');
+        const inpQtd = document.getElementById('quantidade');
+        const elTotal = document.getElementById('totalEstimado');
+
+        function atualizarTotal() {
+            const v = parseFloat(inpValor.value) || 0;
+            const q = parseInt(inpQtd.value, 10) || 0;
+            elTotal.textContent = (v * q).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        selSabor.addEventListener('change', function () {
+            const opt = selSabor.options[selSabor.selectedIndex];
+            const preco = opt.getAttribute('data-preco');
+            if (preco) { inpValor.value = parseFloat(preco).toFixed(2); }
+            atualizarTotal();
+        });
+        inpValor.addEventListener('input', atualizarTotal);
+        inpQtd.addEventListener('input', atualizarTotal);
+        atualizarTotal();
+    </script>
+
+</div>
+
+</body>
+</html>

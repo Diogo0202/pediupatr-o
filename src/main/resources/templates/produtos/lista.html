@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Gerenciar Produtos</title>
+</head>
+<body>
+
+<div th:fragment="content">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0">
+            <i class="bi bi-box-seam me-2 text-primary"></i>Produtos
+        </h2>
+        <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#formularioProduto">
+            <i class="bi bi-plus-lg me-1"></i>Novo Produto
+        </button>
+    </div>
+
+    <!-- Mensagens de feedback -->
+    <div class="alert alert-success alert-dismissible fade show" th:if="${sucesso}" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        <span th:text="${sucesso}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    <div class="alert alert-danger alert-dismissible fade show" th:if="${erro}" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <span th:text="${erro}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <!-- Erros da API (fetch) -->
+    <div class="alert alert-danger alert-dismissible fade show d-none" id="erroApi" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <span id="erroApiTexto"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <!-- Formulário de Cadastro / Edição (JSON via fetch) -->
+    <div class="collapse" id="formularioProduto">
+        <div class="card card-body shadow-sm mb-4">
+            <form id="produtoForm" novalidate>
+                <input type="hidden" id="produtoId" value="">
+
+                <div class="row g-3">
+                    <div class="col-md-5">
+                        <label for="nome" class="form-label">Nome do Produto</label>
+                        <input type="text" id="nome" class="form-control" placeholder="Nome do Produto" required>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="tipo" class="form-label">Tipo do Produto</label>
+                        <select id="tipo" class="form-select" required>
+                            <option value="" disabled selected>Selecione o Tipo</option>
+                            <option value="Pizza">Pizza</option>
+                            <option value="Lanche">Lanche</option>
+                            <option value="Bebida">Bebida</option>
+                            <option value="Porção">Porção</option>
+                            <option value="Adicional">Adicional</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="preco" class="form-label">Preço (R$)</label>
+                        <input type="number" id="preco" class="form-control" placeholder="0,00" step="0.01" min="0" required>
+                    </div>
+
+                    <div class="col-md-2 d-flex align-items-end">
+                        <div class="form-check">
+                            <input type="checkbox" id="ativo" class="form-check-input" checked>
+                            <label for="ativo" class="form-check-label">Produto Ativo</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-3">
+                    <button type="button" class="btn btn-outline-secondary" id="cancelarEdicao" onclick="limparFormulario()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-success" id="salvarProduto">
+                        <i class="bi bi-save me-1"></i>Salvar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Listagem de Produtos -->
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="ps-4">ID</th>
+                        <th>Nome</th>
+                        <th>Tipo</th>
+                        <th>Preço</th>
+                        <th>Ativo</th>
+                        <th class="text-end pe-4">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${#lists.isEmpty(produtos)}">
+                        <td colspan="6" class="text-center text-muted py-5">
+                            <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+                            Nenhum produto cadastrado.
+                        </td>
+                    </tr>
+                    <tr th:each="produto : ${produtos}">
+                        <td class="ps-4 text-muted" th:text="${produto.id}"></td>
+                        <td th:text="${produto.nome}"></td>
+                        <td th:text="${produto.tipo}"></td>
+                        <td th:text="${#numbers.formatDecimal(produto.preco, 1, 'COMMA', 2, 'POINT')}"></td>
+                        <td>
+                            <span class="badge"
+                                  th:classappend="${produto.ativo} ? 'bg-success' : 'bg-secondary'"
+                                  th:text="${produto.ativo} ? 'Ativo' : 'Inativo'"></span>
+                        </td>
+                        <td class="text-end pe-4">
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-warning me-1"
+                                    title="Editar"
+                                    th:attr="data-id=${produto.id},
+                                             data-nome=${produto.nome},
+                                             data-tipo=${produto.tipo},
+                                             data-preco=${produto.preco},
+                                             data-ativo=${produto.ativo}"
+                                    onclick="editarProduto(this)">
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
+                            <button type="button"
+                                    class="btn btn-sm btn-outline-danger"
+                                    title="Excluir"
+                                    th:attr="data-id=${produto.id}, data-nome=${produto.nome}"
+                                    onclick="excluirProduto(this)">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer text-muted small" th:if="${!#lists.isEmpty(produtos)}">
+            Total: <strong th:text="${#lists.size(produtos)}"></strong> produto(s)
+        </div>
+    </div>
+
+    <script>
+        function mostrarErro(mensagem) {
+            document.getElementById('erroApiTexto').textContent = mensagem;
+            const alerta = document.getElementById('erroApi');
+            alerta.classList.remove('d-none');
+        }
+
+        function limparFormulario() {
+            document.getElementById('produtoForm').reset();
+            document.getElementById('produtoId').value = '';
+            document.getElementById('salvarProduto').innerHTML = '<i class="bi bi-save me-1"></i>Salvar';
+            document.getElementById('erroApi').classList.add('d-none');
+        }
+
+        function editarProduto(botao) {
+            const d = botao.dataset;
+            document.getElementById('produtoId').value = d.id;
+            document.getElementById('nome').value = d.nome;
+            document.getElementById('tipo').value = d.tipo;
+            document.getElementById('preco').value = d.preco;
+            document.getElementById('ativo').checked = d.ativo === 'true';
+            document.getElementById('salvarProduto').innerHTML = '<i class="bi bi-arrow-repeat me-1"></i>Atualizar';
+            document.getElementById('erroApi').classList.add('d-none');
+            new bootstrap.Collapse(document.getElementById('formularioProduto')).show();
+            document.getElementById('nome').focus();
+        }
+
+        async function excluirProduto(botao) {
+            const { id, nome } = botao.dataset;
+            if (!confirm(`Deseja realmente excluir o produto "${nome}"?`)) return;
+
+            try {
+                const response = await fetch(`/api/produtos/${id}`, { method: 'DELETE' });
+                if (response.ok || response.status === 204) {
+                    location.reload();
+                } else {
+                    const corpo = await response.json().catch(() => ({}));
+                    mostrarErro(corpo.erro || 'Não foi possível excluir o produto.');
+                }
+            } catch (e) {
+                mostrarErro('Erro de comunicação com o servidor.');
+            }
+        }
+
+        document.getElementById('produtoForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            document.getElementById('erroApi').classList.add('d-none');
+
+            const id = document.getElementById('produtoId').value;
+            const payload = {
+                nome: document.getElementById('nome').value.trim(),
+                tipo: document.getElementById('tipo').value,
+                preco: parseFloat(document.getElementById('preco').value),
+                ativo: document.getElementById('ativo').checked
+            };
+
+            if (!payload.nome || !payload.tipo) {
+                mostrarErro('Preencha nome e tipo do produto.');
+                return;
+            }
+            if (isNaN(payload.preco) || payload.preco < 0) {
+                mostrarErro('Informe um preço válido (maior ou igual a zero).');
+                return;
+            }
+
+            try {
+                const url = id ? `/api/produtos/${id}` : '/api/produtos';
+                const response = await fetch(url, {
+                    method: id ? 'PUT' : 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    location.reload();
+                    return;
+                }
+
+                const corpo = await response.json().catch(() => ({}));
+                if (corpo.campos) {
+                    mostrarErro(Object.values(corpo.campos).join(' '));
+                } else {
+                    mostrarErro(corpo.erro || 'Não foi possível salvar o produto.');
+                }
+            } catch (e) {
+                mostrarErro('Erro de comunicação com o servidor.');
+            }
+        });
+    </script>
+
+</div>
+
+</body>
+</html>

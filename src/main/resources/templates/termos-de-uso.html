@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Termos de Uso - PediuPatrão</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .legal-header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: #ffffff;
+            padding: 2.5rem 1rem;
+            border-radius: 0.75rem;
+            margin-bottom: 2rem;
+        }
+        .legal-section {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            margin-bottom: 1.5rem;
+        }
+        .legal-section h4 {
+            color: #0d6efd;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .badge-version {
+            font-size: 0.85rem;
+            background-color: rgba(255,255,255,0.15);
+            padding: 0.35rem 0.75rem;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<div th:fragment="content">
+    <div class="container py-4">
+        <!-- Navegação e Ações Rápidas -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <a href="javascript:history.back()" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i> Voltar
+            </a>
+            <div class="d-flex gap-2">
+                <a th:href="@{/politica-privacidade}" class="btn btn-outline-primary btn-sm">
+                    <i class="bi bi-shield-check me-1"></i> Política de Privacidade
+                </a>
+                <button onclick="window.print()" class="btn btn-outline-dark btn-sm d-none d-md-inline-flex">
+                    <i class="bi bi-printer me-1"></i> Imprimir
+                </button>
+            </div>
+        </div>
+
+        <!-- Cabeçalho -->
+        <div class="legal-header text-center">
+            <div class="mb-2">
+                <span class="badge-version"><i class="bi bi-file-text me-1"></i> Versão 1.0 — Em vigor</span>
+            </div>
+            <h1 class="h2 fw-bold mb-2">Termos e Condições de Uso</h1>
+            <p class="text-white-50 mb-0">PediuPatrão - Sistema de Gestão de Pizzaria e Delivery</p>
+            <small class="text-white-50">Última atualização: Setembro de 2026</small>
+        </div>
+
+        <!-- Seções dos Termos -->
+        <div class="legal-section">
+            <h4><i class="bi bi-1-circle"></i> 1. Aceitação dos Termos</h4>
+            <p>
+                Ao acessar, cadastrar-se ou utilizar o sistema <strong>PediuPatrão</strong>, o usuário (cliente, atendente ou administrador) declara ter lido, compreendido e concordado integralmente com estes Termos de Uso e com a nossa <a th:href="@{/politica-privacidade}" class="text-decoration-none">Política de Privacidade</a>. Caso não concorde com qualquer cláusula, o uso da plataforma deve ser interrompido imediatamente.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h4><i class="bi bi-2-circle"></i> 2. Descrição dos Serviços</h4>
+            <p>
+                O <strong>PediuPatrão</strong> é uma solução de software desenvolvida para automatizar e otimizar as operações comerciais de pizzarias e deliveries, incluindo:
+            </p>
+            <ul>
+                <li>Gestão de catálogo e estoque de produtos e insumos alimentícios;</li>
+                <li>Cadastro e gerenciamento de base de clientes e endereços de entrega;</li>
+                <li>Processamento de pedidos em tempo real com controle de status operacional;</li>
+                <li>Geração de relatórios gerenciais e acompanhamento de faturamento através de Dashboard;</li>
+                <li>Registro de logs de auditoria para segurança e conformidade operacional.</li>
+            </ul>
+        </div>
+
+        <div class="legal-section">
+            <h4><i class="bi bi-3-circle"></i> 3. Cadastro, Credenciais e Responsabilidade</h4>
+            <p>
+                Para utilização das funções operacionais do sistema, os operadores recebem credenciais de acesso individuais:
+            </p>
+            <ul>
+                <li><strong>Sigilo de Senha:</strong> As credenciais de acesso são pessoais e intransferíveis, protegidas por algoritmos de hashing criptográfico (BCrypt).</li>
+                <li><strong>Veracidade dos Dados:</strong> O usuário se compromete a fornecer dados cadastrais exatos, verídicos e atualizados.</li>
+                <li><strong>Perfis de Acesso:</strong> O sistema adota controle de acesso baseado em funções (RBAC), restringindo áreas administrativas e logs de auditoria exclusivamente a usuários com perfil <code>ADMIN</code>.</li>
+            </ul>
+        </div>
+
+        <div class="legal-section">
+            <h4><i class="bi bi-4-circle"></i> 4. Pedidos, Preços e Cancelamentos</h4>
+            <p>
+                As etapas relativas aos pedidos processados pela plataforma seguem o fluxo de estados padronizado:
+            </p>
+            <ul>
+                <li><strong>Ciclo de Vida do Pedido:</strong> <code>PENDENTE</code> &rarr; <code>EM_PREPARO</code> &rarr; <code>EM_ENTREGA</code> &rarr; <code>ENTREGUE</code> ou <code>CANCELADO</code>.</li>
+                <li><strong>Transições de Status:</strong> O avanço de etapas deve respeitar as regras lógicas de negócio estabelecidas pelo sistema.</li>
+                <li><strong>Preços e Pagamentos:</strong> Os valores totais são calculados automaticamente com base na tabela de preços dos produtos selecionados, suportando formas de pagamento como Dinheiro, Cartão de Crédito/Débito e PIX.</li>
+            </ul>
+        </div>
+
+        <div class="legal-section">
+            <h4><i class="bi bi-5-circle"></i> 5. Proteção de Dados e LGPD</h4>
+            <p>
+                O tratamento de dados pessoais de clientes e colaboradores é realizado em estrita conformidade com a <strong>Lei Geral de Proteção de Dados (Lei nº 13.709/2018 - LGPD)</strong>. A plataforma assegura:
+            </p>
+            <ul>
+                <li>Consentimento explícito e registrado para o armazenamento de dados de contato e endereço;</li>
+                <li>Direito ao esquecimento e anonimização de dados pessoais mediante solicitação formal;</li>
+                <li>Preservação do histórico numérico e contábil de pedidos sem exposição indevida de dados do titular.</li>
+            </ul>
+        </div>
+
+        <div class="legal-section">
+            <h4><i class="bi bi-6-circle"></i> 6. Propriedade Intelectual e Finalidade Acadêmica</h4>
+            <p>
+                O sistema <strong>PediuPatrão</strong> foi desenvolvido como Projeto Final de Curso (PFC) do curso de <strong>Engenharia de Software da Universidade de Mogi das Cruzes (UMC)</strong>. Todo o código-fonte, arquitetura, design e documentação técnica são protegidos pela legislação de direitos autorais e propriedade intelectual aplicável a programas de computador.
+            </p>
+        </div>
+
+        <div class="legal-section">
+            <h4><i class="bi bi-7-circle"></i> 7. Foro e Disposições Gerais</h4>
+            <p class="mb-0">
+                Estes Termos de Uso são regidos pelas leis da República Federativa do Brasil. Fica eleito o Foro da Comarca de Mogi das Cruzes, Estado de São Paulo, para dirimir quaisquer controvérsias oriundas deste instrumento.
+            </p>
+        </div>
+
+        <!-- Rodapé do documento -->
+        <div class="text-center text-muted small py-3">
+            <p class="mb-1">&copy; 2026 PediuPatrão - Sistema de Gestão de Pizzaria | Universidade de Mogi das Cruzes (UMC)</p>
+            <p class="mb-0">Dúvidas sobre os termos? Entre em contato pelo e-mail: <a href="mailto:contato@pediupatrao.umc.br" class="text-decoration-none">contato@pediupatrao.umc.br</a></p>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

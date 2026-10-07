@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Privacidade e Segurança - PediuPatrão</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .privacy-header {
+            background: linear-gradient(135deg, #065f46 0%, #064e3b 100%);
+            color: #ffffff;
+            padding: 2.5rem 1rem;
+            border-radius: 0.75rem;
+            margin-bottom: 2rem;
+        }
+        .privacy-section {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            margin-bottom: 1.5rem;
+        }
+        .privacy-section h4 {
+            color: #059669;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .badge-version {
+            font-size: 0.85rem;
+            background-color: rgba(255,255,255,0.15);
+            padding: 0.35rem 0.75rem;
+            border-radius: 9999px;
+        }
+        .security-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            height: 100%;
+            background-color: #f8fafc;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<div th:fragment="content">
+    <div class="container py-4">
+        <!-- Navegação e Ações Rápidas -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <a href="javascript:history.back()" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-arrow-left me-1"></i> Voltar
+            </a>
+            <div class="d-flex gap-2">
+                <a th:href="@{/termos-de-uso}" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-file-text me-1"></i> Termos de Uso
+                </a>
+                <button onclick="window.print()" class="btn btn-outline-dark btn-sm d-none d-md-inline-flex">
+                    <i class="bi bi-printer me-1"></i> Imprimir
+                </button>
+            </div>
+        </div>
+
+        <!-- Cabeçalho -->
+        <div class="privacy-header text-center">
+            <div class="mb-2">
+                <span class="badge-version"><i class="bi bi-shield-lock-fill me-1"></i> LGPD Compliant — Lei nº 13.709/2018</span>
+            </div>
+            <h1 class="h2 fw-bold mb-2">Política de Privacidade e Segurança</h1>
+            <p class="text-white-50 mb-0">PediuPatrão - Sistema de Gestão de Pizzaria e Delivery</p>
+            <small class="text-white-50">Última atualização: Setembro de 2026</small>
+        </div>
+
+        <!-- Seções da Política -->
+        <div class="privacy-section">
+            <h4><i class="bi bi-shield-check"></i> 1. Compromisso com a Privacidade e Proteção de Dados</h4>
+            <p>
+                O <strong>PediuPatrão</strong> assume o compromisso de proteger a privacidade, a confidencialidade e a segurança dos dados pessoais de seus clientes, operadores e parceiros, em conformidade com as diretrizes da <strong>Lei Geral de Proteção de Dados Pessoais (LGPD - Lei nº 13.709/2018)</strong> e demais normas aplicáveis de segurança da informação.
+            </p>
+        </div>
+
+        <div class="privacy-section">
+            <h4><i class="bi bi-person-lines-fill"></i> 2. Dados Pessoais Coletados e Finalidades</h4>
+            <p>Coletamos e tratamos apenas os dados estritamente necessários para a operação comercial do serviço de delivery:</p>
+            <div class="table-responsive">
+                <table class="table table-bordered table-sm align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Categoria do Dado</th>
+                            <th>Exemplos de Dados</th>
+                            <th>Finalidade / Base Legal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Identificação e Contato</strong></td>
+                            <td>Nome completo e telefone / WhatsApp.</td>
+                            <td>Identificação do cliente e comunicação sobre o status do pedido (Execução de contrato - Art. 7º, V da LGPD).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Endereço de Entrega</strong></td>
+                            <td>CEP, logradouro, número, complemento, bairro, cidade e estado.</td>
+                            <td>Entrega correta e ágil dos pedidos no endereço solicitado (Execução de contrato - Art. 7º, V da LGPD).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Consentimento LGPD</strong></td>
+                            <td>Marcação explícita de aceite e data/hora do consentimento.</td>
+                            <td>Registro comprobatório de autorização do titular (Consentimento - Art. 7º, I da LGPD).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Logs de Auditoria e Acesso</strong></td>
+                            <td>Nome de usuário, ação executada, IP, endpoint e timestamp.</td>
+                            <td>Prevenção a fraudes, segurança da aplicação e auditoria de ações (Cumprimento de obrigação legal e Legítimo interesse).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="privacy-section">
+            <h4><i class="bi bi-lock-fill"></i> 3. Medidas Técnicas de Segurança da Informação</h4>
+            <p>Para proteger as informações contra acessos não autorizados, perdas ou incidentes de segurança, implementamos as seguintes salvaguardas:</p>
+            <div class="row g-3">
+                <div class="col-md-6 col-lg-3">
+                    <div class="security-card">
+                        <div class="fw-bold text-success mb-1"><i class="bi bi-key-fill me-1"></i> Criptografia Forte</div>
+                        <small class="text-muted">Senhas protegidas com algoritmo <strong>BCrypt</strong> com salt dinâmico, impossibilitando a recuperação em texto claro.</small>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="security-card">
+                        <div class="fw-bold text-success mb-1"><i class="bi bi-person-badge-fill me-1"></i> Controle RBAC</div>
+                        <small class="text-muted">Autorização estrita por papéis (<code>ADMIN</code> e <code>USER</code>), bloqueando acessos a módulos sensíveis.</small>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="security-card">
+                        <div class="fw-bold text-success mb-1"><i class="bi bi-journal-text me-1"></i> Auditoria Contínua</div>
+                        <small class="text-muted">Registro centralizado e imutável de todas as operações de escrita (criação, edição e exclusão de registros).</small>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="security-card">
+                        <div class="fw-bold text-success mb-1"><i class="bi bi-shield-shaded me-1"></i> Proteção Web</div>
+                        <small class="text-muted">Proteção contra Cross-Site Request Forgery (CSRF) ativada e sanitização de dados contra Cross-Site Scripting (XSS).</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="privacy-section">
+            <h4><i class="bi bi-person-check-fill"></i> 4. Direitos dos Titulares de Dados</h4>
+            <p>Nos termos do Art. 18 da LGPD, o titular dos dados possui os seguintes direitos garantidos:</p>
+            <ul>
+                <li><strong>Confirmação e Acesso:</strong> Confirmar a existência de tratamento e acessar os dados cadastrados;</li>
+                <li><strong>Correção:</strong> Solicitar a atualização de dados incompletos, inexatos ou desatualizados;</li>
+                <li><strong>Anonimização ou Exclusão (Direito ao Esquecimento):</strong> Solicitar a eliminação dos seus dados pessoais. O sistema realiza a anonimização técnica quando houver pedidos históricos vinculados, preservando os totais fiscais e faturamentos da empresa sem manter dados pessoais expostos;</li>
+                <li><strong>Revogação do Consentimento:</strong> Revogar a autorização dada a qualquer momento via solicitação ao encarregado.</li>
+            </ul>
+        </div>
+
+        <div class="privacy-section">
+            <h4><i class="bi bi-share-fill"></i> 5. Compartilhamento e Integrações Externas</h4>
+            <p>
+                Os dados pessoais <strong>não são vendidos, alugados ou compartilhados</strong> com empresas de publicidade de terceiros. A plataforma utiliza exclusivamente serviços estritamente operacionais:
+            </p>
+            <ul>
+                <li><strong>Serviço ViaCEP:</strong> Consulta técnica via API REST (<code>viacep.com.br</code>) unicamente para autocompletar nomes de ruas e bairros a partir do CEP informado pelo usuário, sem transmissão de nomes ou telefones.</li>
+            </ul>
+        </div>
+
+        <div class="privacy-section">
+            <h4><i class="bi bi-envelope-at-fill"></i> 6. Encarregado de Dados (DPO) e Contato</h4>
+            <p class="mb-0">
+                Para exercer seus direitos de titular de dados ou esclarecer dúvidas sobre nossas práticas de privacidade e segurança da informação, entre em contato com nosso Encarregado de Proteção de Dados (DPO):
+            </p>
+            <div class="mt-2 p-3 bg-light rounded border">
+                <strong>Encarregado de Proteção de Dados (DPO):</strong> Equipe PediuPatrão / PFC Engenharia de Software<br>
+                <strong>Instituição:</strong> Universidade de Mogi das Cruzes (UMC)<br>
+                <strong>E-mail direto para solicitações LGPD:</strong> <a href="mailto:dpo@pediupatrao.umc.br" class="text-decoration-none">dpo@pediupatrao.umc.br</a>
+            </div>
+        </div>
+
+        <!-- Rodapé do documento -->
+        <div class="text-center text-muted small py-3">
+            <p class="mb-1">&copy; 2026 PediuPatrão - Sistema de Gestão de Pizzaria | Universidade de Mogi das Cruzes (UMC)</p>
+            <p class="mb-0">Em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018)</p>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

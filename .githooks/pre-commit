@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+# Garante que o código compile antes de gravar mudanças no histórico.
+set -eu
+
+if command -v cmd.exe >/dev/null 2>&1 && [ -f "./mvnw.cmd" ]; then
+  cmd.exe /d /c "mvnw.cmd -q -DskipTests compile"
+elif [ -x "./mvnw" ]; then
+  ./mvnw -q -DskipTests compile
+elif command -v mvn >/dev/null 2>&1; then
+  mvn -q -DskipTests compile
+else
+  echo "Maven não encontrado; instale o JDK/Maven ou restaure o Maven Wrapper." >&2
+  exit 1
+fi
