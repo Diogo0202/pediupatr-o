@@ -2,6 +2,10 @@
 
 Sistema web para gestão de pizzarias e operações de delivery. O projeto foi desenvolvido como Projeto Final de Curso de Engenharia de Software na UMC, com foco no controle diário de clientes, produtos, pedidos, usuários e indicadores do negócio.
 
+## Demonstração em vídeo
+
+[Assistir à demonstração do produto, 4 min 3 s, MP4 em 1080p](docs/demonstracoes/pediupatrao-demo-2026-11-10.mp4)
+
 ## Funcionalidades
 
 - Cadastro e manutenção de clientes, produtos e usuários.
