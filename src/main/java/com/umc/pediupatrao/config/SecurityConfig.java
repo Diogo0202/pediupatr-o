@@ -73,8 +73,20 @@ public class SecurityConfig {
                                 "/images/**",
                                 "/error"
                         ).permitAll()
+                        // Auditoria é exclusiva do administrador.
+                        .requestMatchers("/admin/auditoria", "/admin/auditoria/**").hasRole("ADMIN")
                         // Gestão de usuários (REST e telas) restrita a ADMIN e GERENTE
                         .requestMatchers("/api/usuarios", "/api/usuarios/**", "/usuarios", "/usuarios/**")
+                        .hasAnyRole("ADMIN", "GERENTE")
+                        // Pedidos e clientes ficam disponíveis para atendimento e gestão.
+                        .requestMatchers("/pedidos", "/pedidos/**", "/api/pedidos", "/api/pedidos/**")
+                        .hasAnyRole("ADMIN", "GERENTE", "ATENDENTE")
+                        .requestMatchers("/clientes", "/clientes/**", "/api/clientes", "/api/clientes/**")
+                        .hasAnyRole("ADMIN", "GERENTE", "ATENDENTE")
+                        // Produtos e cardápio ficam disponíveis para fornecedores e gestão.
+                        .requestMatchers("/produtos", "/produtos/**", "/api/produtos", "/api/produtos/**")
+                        .hasAnyRole("ADMIN", "GERENTE", "FORNECEDOR")
+                        .requestMatchers("/", "/configuracoes", "/api/dashboard/**")
                         .hasAnyRole("ADMIN", "GERENTE")
                         // Área administrativa restrita a ADMIN e GERENTE
                         .requestMatchers("/admin", "/admin/**").hasAnyRole("ADMIN", "GERENTE")

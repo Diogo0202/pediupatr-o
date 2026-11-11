@@ -36,8 +36,12 @@ public class DataInitializer {
 
                 repo.save(user);
 
-                log.warn("Usuário admin criado. Defina app.admin.password no application.properties "
-                        + "(a senha inicial é: {})", senha);
+                if (adminPassword == null || adminPassword.isBlank()) {
+                    log.warn("Usuário admin criado com senha aleatória. Configure APP_ADMIN_PASSWORD "
+                            + "antes de iniciar para definir uma senha conhecida.");
+                } else {
+                    log.info("Usuário administrador inicial '{}' criado.", adminUsername);
+                }
             } else {
                 // ✅ Garante que o admin existente tenha papel ADMIN
                 repo.findByUsername(adminUsername).ifPresent(u -> {
